@@ -1,0 +1,488 @@
+/* =========================================================
+   나는 어떤 창업가일까? - style.css
+   밝은 아이보리 배경 + 보라(인디고) 포인트 컬러
+   ========================================================= */
+
+/* ===== 색상 · 크기 기본값 =====
+   여기 값만 바꾸면 사이트 전체 분위기가 한 번에 바뀝니다. */
+:root {
+  --bg: #f7f6f2;          /* 배경 - 밝은 아이보리 */
+  --card: #ffffff;        /* 카드 배경 */
+  --text: #1e1c30;        /* 기본 글자색 */
+  --muted: #71748a;       /* 보조 글자색 */
+  --line: #e9e7e0;        /* 테두리 · 구분선 */
+  --soft: #faf9f6;        /* 입력창 등 아주 옅은 면 */
+
+  --primary: #5b4ee0;      /* 포인트 컬러 - 보라(인디고) */
+  --primary-dark: #4a3ecb; /* 버튼 hover 시 */
+  --primary-soft: #eeecfd; /* 포인트 컬러의 옅은 배경 */
+
+  /* 결과 유형별 색상 (script.js의 color 값과 같습니다) */
+  --idea: #f5a623;
+  --action: #ef4d5a;
+  --data: #3b6ef6;
+  --people: #22b07d;
+
+  --radius: 24px;
+  --radius-sm: 14px;
+  --shadow: 0 12px 32px rgba(30, 28, 48, 0.07);
+  --shadow-hover: 0 14px 28px rgba(91, 78, 224, 0.22);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(760px 420px at 8% -8%, #ece9fd 0%, rgba(236, 233, 253, 0) 62%),
+    radial-gradient(680px 400px at 100% 4%, #e6effd 0%, rgba(230, 239, 253, 0) 58%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 16px 12px;
+}
+
+.app { width: 100%; max-width: 560px; }
+
+/* ===== 카드 · 화면 전환 ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 34px 30px;
+  overflow: hidden; /* 위쪽 색상 띠가 둥근 모서리를 넘지 않도록 */
+}
+
+.screen { display: none; }
+.screen.active { display: block; animation: fadeUp 0.26s ease-out; }
+
+/* 은은하게 떠오르는 정도의 최소한의 움직임만 사용합니다. */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(7px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* 카드 종류를 한눈에 구분하기 위한 상단 색상 띠
+   · 질문 카드 → 포인트 컬러(보라)
+   · 결과 카드 → 결과 유형별 색상 */
+#screen-quiz { border-top: 5px solid var(--primary); }
+#screen-result { border-top: 5px solid var(--accent); }
+
+/* ===== 시작 화면 ===== */
+.badge {
+  display: inline-block;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.32;
+  margin-bottom: 14px;
+}
+
+.subtitle { color: var(--muted); font-size: 15px; margin-bottom: 24px; word-break: keep-all; }
+.subtitle b { color: var(--text); font-weight: 700; }
+
+.type-preview {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+  margin-bottom: 28px;
+}
+
+.type-chip {
+  font-size: 13.5px;
+  font-weight: 700;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--soft);
+  text-align: center;
+}
+.type-chip.idea   { color: #c47c10; border-color: #f6e3c0; background: #fef8ee; }
+.type-chip.action { color: #d13543; border-color: #f8d2d6; background: #fef1f2; }
+.type-chip.data   { color: #2a55c9; border-color: #cfdcfb; background: #f0f4fe; }
+.type-chip.people { color: #12885f; border-color: #c3e9d9; background: #eef9f4; }
+
+.field-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 9px;
+}
+
+.input {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px; /* 16px 미만이면 아이폰에서 화면이 확대됩니다 */
+  font-family: inherit;
+  color: var(--text);
+  background: var(--soft);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.input::placeholder { color: #a9adbf; }
+.input:hover { border-color: #d6d3ea; }
+.input:focus {
+  background: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(91, 78, 224, 0.14);
+}
+
+.error-text {
+  min-height: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--action);
+  margin: 7px 2px 10px;
+}
+
+.note { font-size: 12.5px; color: #9a9db0; text-align: center; margin-top: 16px; }
+
+/* ===== 버튼 ===== */
+.btn {
+  display: block;
+  width: 100%;
+  min-height: 56px;
+  padding: 17px;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: inherit;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: background 0.16s, transform 0.14s, box-shadow 0.16s;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(91, 78, 224, 0.24);
+}
+.btn-primary:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.btn-primary:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(91, 78, 224, 0.2); }
+
+.btn-ghost {
+  margin-top: 20px;
+  min-height: 44px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+}
+.btn-ghost:hover { color: var(--primary); background: var(--primary-soft); }
+.btn-ghost:disabled { opacity: 0.32; cursor: default; }
+.btn-ghost:disabled:hover { color: var(--muted); background: transparent; }
+
+/* 키보드로 이동할 때 현재 위치가 보이도록 */
+.btn:focus-visible,
+.option:focus-visible,
+.input:focus-visible {
+  outline: 3px solid rgba(91, 78, 224, 0.45);
+  outline-offset: 2px;
+}
+
+/* ===== 질문 화면 ===== */
+/* 질문 카드는 상단에 옅은 보라 헤더 영역을 두어 결과 카드와 구분됩니다. */
+.quiz-head {
+  background: var(--primary-soft);
+  border-radius: var(--radius-sm);
+  padding: 15px 16px;
+  margin-bottom: 26px;
+}
+
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 9px;
+}
+.q-counter { color: var(--primary); }
+.q-percent { color: #8b83c4; }
+
+.progress-track {
+  height: 9px;
+  background: #ddd8f7;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: var(--primary);
+  transition: width 0.35s ease;
+}
+
+.question {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  margin-bottom: 22px;
+  word-break: keep-all;
+}
+
+.options { display: flex; flex-direction: column; gap: 11px; }
+
+.option {
+  width: 100%;
+  min-height: 56px;
+  text-align: left;
+  font-size: 15.5px;
+  line-height: 1.5;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--soft);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  cursor: pointer;
+  word-break: keep-all;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s, box-shadow 0.15s;
+}
+.option:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(91, 78, 224, 0.14);
+}
+.option:active { transform: translateY(0); box-shadow: none; }
+.option.selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+  color: var(--primary-dark);
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(91, 78, 224, 0.16);
+}
+
+/* ===== 결과 화면 =====
+   --accent, --accent-soft 는 결과 유형에 따라 script.js에서 넣어줍니다. */
+#screen-result { --accent: var(--primary); --accent-soft: var(--primary-soft); }
+
+.result-hero {
+  text-align: center;
+  background: linear-gradient(180deg, var(--accent-soft) 0%, rgba(255, 255, 255, 0) 100%);
+  border-radius: 20px;
+  padding: 24px 16px 24px;
+  margin: -10px -10px 22px;
+}
+
+.result-hello { font-size: 14px; color: var(--muted); }
+
+.result-emoji {
+  width: 92px;
+  height: 92px;
+  margin: 12px auto 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 46px;
+  line-height: 1;
+  background: #fff;
+  border: 2.5px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 8px 22px rgba(30, 28, 48, 0.1);
+}
+
+.result-key {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+}
+
+.result-name {
+  font-size: 29px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin: 3px 0 8px;
+}
+
+.result-catch {
+  font-size: 15px;
+  font-weight: 600;
+  color: #4b4d63;
+  word-break: keep-all;
+  margin-bottom: 14px;
+}
+
+.result-score {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--accent);
+  background: #fff;
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.result-desc {
+  font-size: 15px;
+  color: #4b4d63;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-bottom: 22px;
+  word-break: keep-all;
+}
+
+.result-block { margin-bottom: 20px; }
+.block-title { font-size: 15.5px; font-weight: 800; margin-bottom: 10px; }
+
+.block-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.block-list li {
+  position: relative;
+  padding-left: 19px;
+  font-size: 14.5px;
+  color: #4b4d63;
+  word-break: keep-all;
+}
+.block-list li::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.result-block.warn .block-list li::before { background: var(--action); }
+
+/* 궁합 팁 · 보조 유형 안내 */
+.result-tip,
+.result-sub {
+  font-size: 13.5px;
+  color: #4b4d63;
+  background: var(--accent-soft);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-top: 12px;
+  word-break: keep-all;
+}
+.result-sub { text-align: center; font-weight: 600; }
+
+/* ===== 점수 막대그래프 (개인 점수 · 전체 통계 공통) ===== */
+.chart { display: flex; flex-direction: column; gap: 11px; }
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+.chart-row.top { opacity: 1; } /* 1위(또는 내) 유형만 진하게 */
+
+.chart-label { width: 106px; flex-shrink: 0; font-weight: 600; color: #5c5f74; }
+.chart-row.top .chart-label { font-weight: 800; color: var(--text); }
+
+.chart-track {
+  flex: 1;
+  height: 11px;
+  background: #eeece6;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.chart-fill { height: 100%; border-radius: 999px; width: 0%; transition: width 0.7s ease; }
+
+.chart-value { width: 34px; text-align: right; font-weight: 700; color: var(--muted); }
+.chart-row.top .chart-value { color: var(--text); }
+
+/* ===== 전체 참여자 통계 ===== */
+.stats-block {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  margin-top: 24px;
+}
+
+.stats-total {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 13px;
+}
+
+.stats-message {
+  font-size: 13px;
+  color: var(--muted);
+  text-align: center;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px;
+  margin-top: 12px;
+  word-break: keep-all;
+}
+
+/* 통계 막대는 "42% · 12명" 형태라 숫자 칸이 더 넓어야 합니다. */
+.chart-value.stats-value { width: 74px; }
+
+#btn-restart {
+  margin-top: 16px;
+  background: var(--accent);
+  box-shadow: 0 6px 16px rgba(30, 28, 48, 0.16);
+}
+#btn-restart:hover { background: var(--accent); filter: brightness(0.92); }
+
+.footer { margin: 20px 0 10px; font-size: 12px; color: #a3a6b8; text-align: center; }
+
+/* ===== 스마트폰 반응형 ===== */
+@media (max-width: 480px) {
+  body { padding: 18px 12px 8px; }
+
+  .card { padding: 26px 20px; border-radius: 20px; }
+  .title { font-size: 25px; }
+  .subtitle { font-size: 14.5px; }
+  .type-preview { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .type-chip { font-size: 12.5px; padding: 10px 6px; }
+
+  /* 손가락으로 누르기 편하도록 버튼 높이를 넉넉히 유지합니다. */
+  .btn { min-height: 54px; font-size: 16.5px; padding: 16px; }
+  .question { font-size: 19px; }
+  .option { font-size: 15px; padding: 15px 16px; min-height: 54px; }
+
+  .result-hero { padding: 18px 10px 20px; margin: -8px -8px 18px; }
+  .result-emoji { width: 78px; height: 78px; font-size: 38px; margin: 10px auto 12px; }
+  .result-name { font-size: 24px; }
+  .result-catch { font-size: 14px; }
+  .result-desc { padding: 15px; font-size: 14.5px; }
+
+  .chart-row { gap: 9px; }
+  .chart-label { width: 86px; font-size: 12px; }
+  .chart-value { width: 30px; font-size: 12px; }
+  .chart-value.stats-value { width: 62px; font-size: 11.5px; }
+}
+
+/* 화면 움직임을 최소화하도록 설정한 사용자에게는 애니메이션을 끕니다. */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

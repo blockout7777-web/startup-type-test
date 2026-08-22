@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>강의 슬라이드 디자인 가이드 · Living AI 스타트업 육성교육</title>
+<meta name="description" content="VS Code 바이브코딩 강의 슬라이드 제작을 위한 디자인 시스템 가이드 — Pretendard 타입 스케일, 컬러 팔레트, 고정 요소 규격, 3D 아이콘 가이드" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>" />
+
+<!-- Pretendard 웹폰트 -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+<style>
+  :root{
+    /* ===== 슬라이드 팔레트 (실제 파일에서 추출한 값) ===== */
+    --navy-900:#011B54;   /* 표지 배경 */
+    --navy-800:#0D2371;   /* 번호 원형 · 코드바 */
+    --blue-700:#2A46C2;   /* 페이지 번호 배지 */
+    --blue-600:#2340BC;   /* 푸터 강의주제 글자 */
+    --violet-600:#6A5AE8; /* 주 포인트 */
+    --violet-400:#8678EC; /* SESSION 배지 */
+    --violet-100:#ECE9FA; /* 팁 배경 · 알약 */
+    --sand-300:#E4D3BF;   /* 표지 강조 */
+    --grey-300:#D6D9EA;   /* 진행바 빈칸 */
+    --ink-900:#0A0A0A;
+    --ink-500:#6B6B72;
+    --line-200:#E3E5EE;
+
+    /* 문서용 */
+    --bg:#F3F4F9; --card:#fff; --line:#E5E7F0; --soft:#FAFAFD;
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:linear-gradient(180deg,#F5F6FB 0%,var(--bg) 100%);
+    color:var(--ink-900);line-height:1.65;-webkit-font-smoothing:antialiased;
+    font-family:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,
+      "Apple SD Gothic Neo","Malgun Gothic","맑은 고딕",sans-serif;
+    padding:0 20px 60px;
+  }
+  .wrap{max-width:900px;margin:0 auto}
+
+  /* ── 표지 ── */
+  .hero{background:var(--navy-900);color:#fff;border-radius:24px;
+    padding:46px 46px 40px;margin:26px 0 34px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;right:-90px;top:-90px;width:340px;height:340px;
+    border-radius:50%;background:radial-gradient(circle,rgba(134,120,236,.42),transparent 68%)}
+  .hero .eyebrow{color:var(--violet-400);font-size:15px;font-weight:700;letter-spacing:.08em}
+  .hero h1{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1.24;margin:12px 0 12px}
+  .hero p{color:#C9CEE6;font-size:16px;max-width:640px;word-break:keep-all}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;position:relative;z-index:1}
+  .hero .meta span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+    border-radius:999px;padding:7px 15px;font-size:13.5px;font-weight:600}
+
+  /* ── 레이아웃 ── */
+  .layout{display:flex;gap:34px;max-width:1220px;margin:0 auto;align-items:flex-start}
+  .content{flex:1;min-width:0;max-width:900px}
+  .sidebar{position:sticky;top:16px;flex:0 0 214px;width:214px;
+    max-height:calc(100vh - 32px);overflow-y:auto;background:var(--card);
+    border:1px solid var(--line);border-radius:18px;padding:14px 11px 12px}
+  .side-title{font-size:12px;font-weight:800;color:var(--ink-500);padding:0 10px;margin-bottom:9px;letter-spacing:.05em}
+  .side-list{display:flex;flex-direction:column;gap:1px}
+  .side-link{display:flex;align-items:center;gap:8px;padding:clamp(5px,.95vh,10px) 10px;
+    border-radius:9px;font-size:clamp(12px,1.5vh,13.5px);font-weight:600;color:#4B4D63;
+    text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    transition:background .14s,color .14s}
+  .side-link:hover{background:var(--soft);color:var(--ink-900)}
+  .side-link.active{background:var(--violet-100);color:#4A3ECB;font-weight:800}
+  .side-no{font-size:clamp(10px,1.2vh,11.5px);font-weight:800;color:#A9A6C4;flex-shrink:0}
+  .side-link.active .side-no{color:var(--violet-600)}
+
+  /* ── 섹션 ── */
+  section{margin-bottom:46px;scroll-margin-top:20px}
+  h2.sec{font-size:25px;font-weight:800;letter-spacing:-.025em;margin-bottom:7px}
+  h2.sec .no{color:var(--violet-600)}
+  .sec-desc{font-size:15px;color:var(--ink-500);margin-bottom:20px;word-break:keep-all}
+  h3{font-size:16.5px;font-weight:800;margin:24px 0 10px}
+  h3:first-child{margin-top:0}
+  p{font-size:15px;word-break:keep-all}
+  p+p{margin-top:9px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .card+.card{margin-top:14px}
+
+  ul.list,ol.list{margin:9px 0 0 2px;padding-left:20px}
+  ul.list li,ol.list li{font-size:14.5px;margin-bottom:6px;word-break:keep-all}
+  ul.list li::marker{color:var(--violet-600)}
+
+  code.inline{background:var(--violet-100);color:#4A3ECB;padding:2px 7px;border-radius:6px;
+    font-size:13px;font-weight:600;font-family:ui-monospace,Consolas,monospace}
+
+  /* ── 표 ── */
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px;min-width:440px}
+  th,td{padding:10px 11px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+  th{font-size:12px;font-weight:700;color:var(--ink-500);background:var(--soft);white-space:nowrap}
+  th:first-child{border-radius:8px 0 0 8px} th:last-child{border-radius:0 8px 8px 0}
+  td.mono,th.mono{font-family:ui-monospace,Consolas,monospace;font-size:13px}
+  td b{font-weight:700}
+  tr.fixed td{background:#FBFAFF}
+  .pin{display:inline-block;background:var(--violet-600);color:#fff;font-size:10.5px;
+    font-weight:800;padding:2px 7px;border-radius:5px;margin-left:6px;vertical-align:1px}
+
+  /* ── 알림 박스 ── */
+  .tip{border-left:4px solid var(--violet-600);background:var(--violet-100);
+    border-radius:0 12px 12px 0;padding:14px 17px;margin-top:15px;font-size:14.5px;word-break:keep-all}
+  .warn{border-left:4px solid #EF4D5A;background:#FEF2F2;
+    border-radius:0 12px 12px 0;padding:14px 17px;margin-top:15px;font-size:14.5px;word-break:keep-all}
+  .rule{border-left:4px solid var(--navy-800);background:#F2F5FF;
+    border-radius:0 12px 12px 0;padding:14px 17px;margin-top:15px;font-size:14.5px;word-break:keep-all}
+
+  /* ── 색상 스와치 ── */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:11px;margin-top:6px}
+  .sw{border:1px solid var(--line);border-radius:13px;overflow:hidden;background:#fff}
+  .sw .chip{height:64px}
+  .sw .info{padding:9px 11px 11px}
+  .sw .nm{font-size:12.5px;font-weight:800}
+  .sw .hx{font-size:12px;color:var(--ink-500);font-family:ui-monospace,Consolas,monospace;margin-top:1px}
+  .sw .us{font-size:11.5px;color:var(--ink-500);margin-top:4px;line-height:1.4;word-break:keep-all}
+
+  /* ── 타입 스펙시멘 ── */
+  .spec{border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:10px;background:#fff}
+  .spec .lab{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:9px}
+  .spec .lab b{font-size:12.5px;font-weight:800}
+  .spec .lab span{font-size:11.5px;color:var(--ink-500);font-family:ui-monospace,Consolas,monospace;
+    background:var(--soft);border:1px solid var(--line);border-radius:6px;padding:2px 7px}
+  .spec .sample{color:var(--ink-900);line-height:1.25;word-break:keep-all}
+
+  /* ── 슬라이드 목업 ── */
+  .stage{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    background:#fff;margin-top:8px}
+  .stage-inner{position:relative;width:1920px;height:1080px;transform-origin:0 0}
+  .slide{position:absolute;inset:0;background:linear-gradient(140deg,#F5F6FB 0%,#F1F3F9 100%);
+    font-family:"Pretendard",sans-serif}
+  .slide.cover{background:var(--navy-900)}
+
+  /* 목업 안의 실제 규격 요소 */
+  .s-title{position:absolute;left:60px;top:44px;font-size:84px;font-weight:700;
+    letter-spacing:-.03em;line-height:1.12;color:var(--ink-900)}
+  .s-sub{position:absolute;left:60px;top:150px;font-size:28px;font-weight:500;color:var(--ink-500)}
+  .s-divider{position:absolute;left:60px;right:60px;top:207px;height:1px;background:var(--line-200)}
+  .s-badge{position:absolute;right:60px;top:44px;height:56px;padding:0 28px;border-radius:10px;
+    background:var(--violet-400);color:#fff;font-size:24px;font-weight:700;letter-spacing:.04em;
+    display:flex;align-items:center}
+  .s-foot{position:absolute;left:60px;bottom:36px;height:64px;display:flex;align-items:center;
+    font-size:22px;font-weight:600;color:var(--blue-600)}
+  .s-track{position:absolute;left:880px;bottom:64px;width:780px;height:8px;border-radius:99px;
+    background:var(--grey-300)}
+  .s-track i{position:absolute;left:0;top:0;height:100%;width:38%;border-radius:99px;background:var(--blue-600)}
+  .s-page{position:absolute;right:60px;bottom:36px;width:120px;height:64px;border-radius:14px;
+    background:var(--blue-700);color:#fff;font-size:32px;font-weight:700;
+    display:flex;align-items:center;justify-content:center}
+  .s-body{position:absolute;left:60px;right:60px;top:247px;bottom:136px;
+    border:2px dashed #C9CEE6;border-radius:18px;display:flex;align-items:center;justify-content:center;
+    color:#98A0BF;font-size:30px;font-weight:700}
+
+  /* 치수선 */
+  .dim{position:absolute;color:#EF4D5A;font-size:19px;font-weight:800;
+    font-family:ui-monospace,Consolas,monospace;white-space:nowrap}
+  .dimline{position:absolute;background:#EF4D5A;opacity:.55}
+
+  /* ── 템플릿 카드 ── */
+  .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+  .tpl{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff}
+  .tpl .head{padding:12px 14px 10px;border-bottom:1px solid var(--line)}
+  .tpl .head b{font-size:14px;font-weight:800}
+  .tpl .head span{display:block;font-size:12px;color:var(--ink-500);margin-top:2px}
+  .tpl .mini{height:132px;background:linear-gradient(140deg,#F5F6FB,#F1F3F9);position:relative;padding:12px}
+  .tpl .mini.dark{background:var(--navy-900)}
+  .m-t{height:12px;border-radius:3px;background:#1E1E22}
+  .m-s{height:6px;border-radius:3px;background:#C2C6D6;margin-top:5px}
+  .m-line{height:1px;background:#DDE1EC;margin:9px 0}
+  .m-box{border-radius:6px;background:#fff;border:1px solid #E6E8F0}
+  .m-badge{position:absolute;right:12px;top:12px;width:44px;height:12px;border-radius:3px;background:var(--violet-400)}
+  .m-foot{position:absolute;left:12px;right:12px;bottom:10px;display:flex;align-items:center;gap:6px}
+  .m-foot i{height:5px;border-radius:3px;background:var(--blue-600);width:52px}
+  .m-foot u{flex:1;height:3px;border-radius:3px;background:var(--grey-300)}
+  .m-foot s{width:18px;height:11px;border-radius:3px;background:var(--blue-700)}
+
+  /* ── 3D 아이콘 ── */
+  .icon-rules{display:grid;grid-template-columns:repeat(auto-fill,minmax(216px,1fr));gap:11px;margin-top:6px}
+  .irule{border:1px solid var(--line);border-radius:13px;padding:14px 15px;background:#fff}
+  .irule b{display:block;font-size:13.5px;font-weight:800;margin-bottom:5px}
+  .irule span{font-size:13px;color:#4B4D63;word-break:keep-all}
+
+  .do-dont{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+  .dd{border-radius:14px;padding:15px 17px;border:1px solid}
+  .dd.do{background:#EEFAF4;border-color:#C3E9D9}
+  .dd.dont{background:#FEF2F2;border-color:#F8D2D6}
+  .dd b{display:block;font-size:13.5px;font-weight:800;margin-bottom:8px}
+  .dd.do b{color:#12885F} .dd.dont b{color:#D13543}
+  .dd ul{margin:0;padding-left:17px}
+  .dd li{font-size:13.5px;margin-bottom:5px;word-break:keep-all}
+
+  /* ── 프롬프트 상자 ── */
+  .prompt-box{background:#1F1D33;border-radius:14px;overflow:hidden;margin-top:12px}
+  .prompt-bar{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 12px 10px 16px;background:rgba(255,255,255,.06)}
+  .prompt-label{font-size:12px;font-weight:700;color:#B9B4E8;letter-spacing:.05em}
+  .copy-btn{background:rgba(255,255,255,.12);color:#fff;border:none;border-radius:9px;
+    padding:7px 14px;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:background .15s}
+  .copy-btn:hover{background:var(--violet-600)}
+  .copy-btn.done{background:#22B07D}
+  pre{margin:0;padding:17px;overflow-x:auto;color:#ECEAFD;font-size:13px;line-height:1.7;
+    font-family:ui-monospace,Consolas,"D2Coding",monospace;white-space:pre-wrap;word-break:break-word}
+
+  /* ── 체크리스트 ── */
+  .check{display:flex;gap:11px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+  .check:last-child{border-bottom:none}
+  .check .num{flex-shrink:0;width:23px;height:23px;border-radius:7px;background:var(--violet-100);
+    color:var(--violet-600);font-size:11.5px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .check div{font-size:14.5px;word-break:keep-all}
+  .check b{font-weight:800}
+
+  footer{text-align:center;color:#A3A6B8;font-size:13px;padding-top:30px;border-top:1px solid var(--line)}
+
+  @media (max-width:1040px){
+    .layout{display:block}
+    .content{max-width:none}
+    .sidebar{position:sticky;top:0;z-index:50;width:auto;flex:none;max-height:none;overflow:visible;
+      border-radius:0 0 14px 14px;margin:0 -20px 20px;padding:9px 0 7px;
+      box-shadow:0 6px 16px rgba(30,28,48,.07)}
+    .side-title{display:none}
+    .side-list{flex-direction:row;gap:6px;overflow-x:auto;padding:2px 14px;scrollbar-width:none}
+    .side-list::-webkit-scrollbar{display:none}
+    .side-link{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:8px 13px;font-size:13px}
+    section{scroll-margin-top:72px}
+    .do-dont{grid-template-columns:1fr}
+  }
+  @media (max-width:600px){
+    body{padding:0 12px 40px}
+    .sidebar{margin:0 -12px 18px}
+    .hero{padding:30px 24px 28px;border-radius:18px}
+    .hero h1{font-size:27px}
+    h2.sec{font-size:21px}
+    .card{padding:18px}
+  }
+  @media print{
+    body{background:#fff}
+    .sidebar,.copy-btn{display:none}
+    .layout{display:block}
+    .card,.spec,.tpl{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">LIVING AI 스타트업 육성교육</p>
+    <h1>강의 슬라이드 디자인 가이드</h1>
+    <p>
+      기존 <b>MVP_VSCode_바이브코딩_이선우.pdf</b> 40장을 분석해 만든 통합 디자인 시스템입니다.
+      타이틀 · 하단 강의주제 · 페이지번호는 <b>모든 슬라이드에서 동일한 크기</b>로 고정하고,
+      아이콘은 <b>3D 아이콘 한 가지 스타일</b>로 통일합니다.
+    </p>
+    <div class="meta">
+      <span>1920 × 1080 (16:9)</span>
+      <span>Pretendard</span>
+      <span>고정 요소 3종</span>
+      <span>템플릿 6종</span>
+      <span>3D 아이콘 규격</span>
+    </div>
+  </header>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <p class="side-title">가이드 목차</p>
+    <nav class="side-list" id="side-list">
+      <a class="side-link" href="#diagnosis" title="현재 파일 진단"><span class="side-no">01</span>현재 진단</a>
+      <a class="side-link" href="#canvas" title="기본 규격과 그리드"><span class="side-no">02</span>기본 규격</a>
+      <a class="side-link" href="#type" title="타이포그래피"><span class="side-no">03</span>타이포그래피</a>
+      <a class="side-link" href="#color" title="컬러 팔레트"><span class="side-no">04</span>컬러</a>
+      <a class="side-link" href="#fixed" title="고정 요소 규격"><span class="side-no">05</span>고정 요소</a>
+      <a class="side-link" href="#templates" title="슬라이드 템플릿"><span class="side-no">06</span>템플릿</a>
+      <a class="side-link" href="#components" title="컴포넌트"><span class="side-no">07</span>컴포넌트</a>
+      <a class="side-link" href="#icon3d" title="3D 아이콘 가이드"><span class="side-no">08</span>3D 아이콘</a>
+      <a class="side-link" href="#checklist" title="제작 체크리스트"><span class="side-no">09</span>체크리스트</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+  <!-- ═══ 01 진단 ═══ -->
+  <section id="diagnosis">
+    <h2 class="sec"><span class="no">01</span> 현재 파일 진단</h2>
+    <p class="sec-desc">기존 40장을 픽셀 단위로 측정한 결과, 같은 역할의 요소가 슬라이드마다 다른 크기로 들어가 있습니다.</p>
+
+    <div class="card">
+      <h3>실측 결과</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>요소</th><th>3쪽</th><th>20쪽</th><th>40쪽</th><th>판정</th></tr></thead>
+          <tbody>
+            <tr><td><b>타이틀</b> 글자 높이</td><td class="mono">64px</td><td class="mono">72px</td><td class="mono">60px</td><td>❌ 3종류</td></tr>
+            <tr><td>부제 글자 높이</td><td class="mono">27px</td><td class="mono">31px</td><td class="mono">30px</td><td>❌ 3종류</td></tr>
+            <tr><td><b>푸터 강의주제</b></td><td class="mono">22px</td><td class="mono">24px</td><td class="mono">25px</td><td>❌ 3종류</td></tr>
+            <tr><td><b>페이지 배지</b></td><td class="mono">131×70</td><td colspan="2" class="mono">색·폭 다름</td><td>❌ 불일치</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>구조적 불일치 4가지</h3>
+      <ul class="list">
+        <li><b>푸터 문구가 두 종류</b> — "VS Code 설치부터 바이브코딩 첫 세팅까지" / "Living AI 스타트업 육성교육 ㅣ 회사 홈페이지 만들기 (VS Code 실습)"</li>
+        <li><b>진행 표시가 세 종류</b> — 막대+퍼센트(7%) / 막대+분수(10 / 30) / 막대만</li>
+        <li><b>페이지 번호가 중간에 리셋</b> — 02·03… 진행 후 다시 10…30으로 시작 (두 개 덱을 합친 흔적)</li>
+        <li><b>페이지 배지 색이 두 가지</b> — 진한 네이비 계열 / 밝은 파랑 계열</li>
+      </ul>
+
+      <div class="rule">
+        <b>이 가이드의 목표</b> — 위 8가지를 하나의 값으로 고정합니다.
+        특히 <b>타이틀 · 푸터 강의주제 · 페이지번호</b> 3종은 <b>어떤 슬라이드에서도 절대 크기를 바꾸지 않습니다.</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 02 기본 규격 ═══ -->
+  <section id="canvas">
+    <h2 class="sec"><span class="no">02</span> 기본 규격과 그리드</h2>
+    <p class="sec-desc">모든 수치는 1920 × 1080 캔버스 기준의 절대 픽셀값입니다.</p>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>항목</th><th>값</th><th>설명</th></tr></thead>
+          <tbody>
+            <tr><td>캔버스</td><td class="mono">1920 × 1080</td><td>16:9 / 파워포인트 · 구글슬라이드 와이드</td></tr>
+            <tr><td>좌우 안전 여백</td><td class="mono">60px</td><td>모든 요소의 좌우 한계선</td></tr>
+            <tr><td>상단 여백</td><td class="mono">44px</td><td>타이틀·SESSION 배지의 윗변</td></tr>
+            <tr><td>하단 여백</td><td class="mono">36px</td><td>푸터 요소의 아랫변</td></tr>
+            <tr><td>헤더 영역</td><td class="mono">0 ~ 207px</td><td>타이틀 + 부제 + 구분선</td></tr>
+            <tr><td>본문 영역</td><td class="mono">247 ~ 944px</td><td>실제 내용이 들어가는 높이 <b>697px</b></td></tr>
+            <tr><td>푸터 영역</td><td class="mono">944 ~ 1080px</td><td>강의주제 · 진행바 · 페이지번호</td></tr>
+            <tr><td>기본 간격 단위</td><td class="mono">8px</td><td>모든 여백은 8의 배수 (8·16·24·32·40)</td></tr>
+            <tr><td>카드 모서리</td><td class="mono">18px</td><td>큰 패널은 22px, 작은 알약은 999px</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip">
+        <b>본문 697px를 넘기지 마세요.</b> 내용이 넘치면 글자를 줄이지 말고
+        <b>슬라이드를 나누는 것</b>이 원칙입니다. 글자 크기를 줄이는 순간 전체 통일성이 깨집니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 03 타이포그래피 ═══ -->
+  <section id="type">
+    <h2 class="sec"><span class="no">03</span> 타이포그래피 — Pretendard</h2>
+    <p class="sec-desc">
+      전 슬라이드 <b>Pretendard 한 종류</b>만 사용합니다. 굵기 차이로 위계를 만들고, 다른 폰트를 섞지 않습니다.
+    </p>
+
+    <div class="card">
+      <h3>폰트 설치</h3>
+      <ul class="list">
+        <li><b>PPT · 키노트</b> — <code class="inline">Pretendard</code> 데스크톱 폰트 설치 후 사용 (github.com/orioncactus/pretendard)</li>
+        <li><b>웹 · HTML 슬라이드</b> — CDN 링크로 불러오기 (이 문서도 같은 방식)</li>
+        <li><b>대체 폰트</b> — 설치 불가 시 <code class="inline">Malgun Gothic</code>(맑은 고딕). 단, 자간이 달라 줄바꿈이 밀릴 수 있음</li>
+        <li>코드·URL 표기는 <b>고정폭 폰트</b>(D2Coding · Consolas) 예외 허용</li>
+      </ul>
+
+      <h3>고정 타입 스케일</h3>
+      <p style="font-size:14.5px;color:var(--ink-500);margin-bottom:12px">
+        <span class="pin" style="margin-left:0">고정</span> 표시된 3종은 슬라이드마다 절대 변경하지 않습니다.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>용도</th><th>크기</th><th>굵기</th><th>자간</th><th>색</th></tr></thead>
+          <tbody>
+            <tr><td>표지 대제목</td><td class="mono">96px</td><td>800 ExtraBold</td><td class="mono">-0.03em</td><td>흰색</td></tr>
+            <tr><td>표지 부제</td><td class="mono">40px</td><td>600 SemiBold</td><td class="mono">-0.01em</td><td>Sand 300</td></tr>
+            <tr><td>섹션 표지 제목</td><td class="mono">72px</td><td>800 ExtraBold</td><td class="mono">-0.03em</td><td>흰색</td></tr>
+            <tr class="fixed"><td><b>슬라이드 타이틀</b><span class="pin">고정</span></td><td class="mono"><b>84px</b></td><td>700 Bold</td><td class="mono">-0.03em</td><td>Ink 900</td></tr>
+            <tr><td>타이틀 부제</td><td class="mono">28px</td><td>500 Medium</td><td class="mono">0</td><td>Ink 500</td></tr>
+            <tr><td>본문 대항목</td><td class="mono">34px</td><td>700 Bold</td><td class="mono">-0.01em</td><td>Ink 900</td></tr>
+            <tr><td>본문 기본</td><td class="mono">26px</td><td>500 Medium</td><td class="mono">0</td><td>Ink 900</td></tr>
+            <tr><td>본문 보조설명</td><td class="mono">22px</td><td>400 Regular</td><td class="mono">0</td><td>Ink 500</td></tr>
+            <tr><td>강조 한 줄 메시지</td><td class="mono">40px</td><td>800 ExtraBold</td><td class="mono">-0.02em</td><td>Navy 800</td></tr>
+            <tr><td>SESSION 배지</td><td class="mono">24px</td><td>700 Bold</td><td class="mono">0.04em</td><td>흰색</td></tr>
+            <tr><td>캡션 · 라벨</td><td class="mono">20px</td><td>600 SemiBold</td><td class="mono">0</td><td>Ink 500</td></tr>
+            <tr class="fixed"><td><b>푸터 강의주제</b><span class="pin">고정</span></td><td class="mono"><b>22px</b></td><td>600 SemiBold</td><td class="mono">0</td><td>Blue 600</td></tr>
+            <tr class="fixed"><td><b>페이지 번호</b><span class="pin">고정</span></td><td class="mono"><b>32px</b></td><td>700 Bold</td><td class="mono">0</td><td>흰색</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>실제 크기 미리보기</h3>
+      <div class="spec">
+        <div class="lab"><b>슬라이드 타이틀</b><span>84px / 700 / -0.03em</span><span>전 슬라이드 고정</span></div>
+        <div class="sample" style="font-size:84px;font-weight:700;letter-spacing:-.03em">VS Code 설치하기</div>
+      </div>
+      <div class="spec">
+        <div class="lab"><b>타이틀 부제</b><span>28px / 500</span></div>
+        <div class="sample" style="font-size:28px;font-weight:500;color:var(--ink-500)">공식 사이트에서 다운로드하고 1분 안에 설치를 끝냅니다</div>
+      </div>
+      <div class="spec">
+        <div class="lab"><b>본문 대항목 / 본문 기본</b><span>34px · 26px</span></div>
+        <div class="sample" style="font-size:34px;font-weight:700;letter-spacing:-.01em">필수 확장 프로그램 설치</div>
+        <div class="sample" style="font-size:26px;font-weight:500;margin-top:8px;color:#333">Live Server, Prettier 등 기본 4종을 한 번에 설치합니다</div>
+      </div>
+      <div class="spec">
+        <div class="lab"><b>푸터 강의주제 / 페이지 번호</b><span>22px · 32px</span><span>전 슬라이드 고정</span></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div class="sample" style="font-size:22px;font-weight:600;color:var(--blue-600)">Living AI 스타트업 육성교육 ㅣ VS Code 바이브코딩</div>
+          <div style="width:120px;height:64px;border-radius:14px;background:var(--blue-700);color:#fff;
+            font-size:32px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">03</div>
+        </div>
+      </div>
+
+      <div class="warn">
+        <b>하지 말 것</b> — 내용이 길다고 타이틀을 68px로 줄이거나, 짧다고 96px로 키우지 마세요.
+        타이틀이 두 줄이 되면 <b>줄이는 대신 문구를 짧게</b> 고칩니다. 타이틀은 <b>한 줄 20자 이내</b>가 기준입니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 04 컬러 ═══ -->
+  <section id="color">
+    <h2 class="sec"><span class="no">04</span> 컬러 팔레트</h2>
+    <p class="sec-desc">기존 40장에서 실제로 추출한 색입니다. 새 색을 추가하지 말고 이 안에서만 조합하세요.</p>
+
+    <div class="card">
+      <h3>주요 색</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#011B54"></div><div class="info">
+          <div class="nm">Navy 900</div><div class="hx">#011B54</div><div class="us">표지·섹션표지 배경</div></div></div>
+        <div class="sw"><div class="chip" style="background:#0D2371"></div><div class="info">
+          <div class="nm">Navy 800</div><div class="hx">#0D2371</div><div class="us">번호 원형, 코드바, 강조 문장</div></div></div>
+        <div class="sw"><div class="chip" style="background:#2A46C2"></div><div class="info">
+          <div class="nm">Blue 700</div><div class="hx">#2A46C2</div><div class="us">페이지 번호 배지</div></div></div>
+        <div class="sw"><div class="chip" style="background:#2340BC"></div><div class="info">
+          <div class="nm">Blue 600</div><div class="hx">#2340BC</div><div class="us">푸터 강의주제, 진행바 채움</div></div></div>
+        <div class="sw"><div class="chip" style="background:#6A5AE8"></div><div class="info">
+          <div class="nm">Violet 600</div><div class="hx">#6A5AE8</div><div class="us">주 포인트 · 3D 아이콘 메인</div></div></div>
+        <div class="sw"><div class="chip" style="background:#8678EC"></div><div class="info">
+          <div class="nm">Violet 400</div><div class="hx">#8678EC</div><div class="us">SESSION 배지, 보조 강조</div></div></div>
+        <div class="sw"><div class="chip" style="background:#ECE9FA"></div><div class="info">
+          <div class="nm">Violet 100</div><div class="hx">#ECE9FA</div><div class="us">팁 박스, 알약 배경</div></div></div>
+        <div class="sw"><div class="chip" style="background:#E4D3BF"></div><div class="info">
+          <div class="nm">Sand 300</div><div class="hx">#E4D3BF</div><div class="us">표지 부제, 활성 칩 (희소하게)</div></div></div>
+      </div>
+
+      <h3>중립 색</h3>
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:linear-gradient(140deg,#F5F6FB,#F1F3F9)"></div><div class="info">
+          <div class="nm">Background</div><div class="hx">#F5F6FB → #F1F3F9</div><div class="us">본문 슬라이드 배경 (140° 그라데이션)</div></div></div>
+        <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #E5E7F0"></div><div class="info">
+          <div class="nm">Card</div><div class="hx">#FFFFFF</div><div class="us">카드·패널 배경</div></div></div>
+        <div class="sw"><div class="chip" style="background:#E3E5EE"></div><div class="info">
+          <div class="nm">Line 200</div><div class="hx">#E3E5EE</div><div class="us">헤더 구분선, 카드 테두리</div></div></div>
+        <div class="sw"><div class="chip" style="background:#D6D9EA"></div><div class="info">
+          <div class="nm">Grey 300</div><div class="hx">#D6D9EA</div><div class="us">진행바 빈 구간</div></div></div>
+        <div class="sw"><div class="chip" style="background:#0A0A0A"></div><div class="info">
+          <div class="nm">Ink 900</div><div class="hx">#0A0A0A</div><div class="us">타이틀·본문 글자</div></div></div>
+        <div class="sw"><div class="chip" style="background:#6B6B72"></div><div class="info">
+          <div class="nm">Ink 500</div><div class="hx">#6B6B72</div><div class="us">부제·보조 설명</div></div></div>
+      </div>
+
+      <h3>색 사용 비율</h3>
+      <ul class="list">
+        <li><b>배경·흰색 70%</b> — 여백이 많아야 정보가 읽힙니다</li>
+        <li><b>네이비·블루 20%</b> — 타이틀, 번호, 푸터 등 구조 요소</li>
+        <li><b>바이올렛 8%</b> — 강조하고 싶은 딱 한 곳</li>
+        <li><b>샌드 2%</b> — 표지와 "지금 여기" 표시에만</li>
+      </ul>
+
+      <div class="warn">
+        <b>빨강·초록은 의미가 있을 때만.</b> 빨강은 경고·금지, 초록은 완료·성공에만 씁니다.
+        장식 목적으로 쓰면 슬라이드가 산만해집니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 05 고정 요소 ═══ -->
+  <section id="fixed">
+    <h2 class="sec"><span class="no">05</span> 고정 요소 규격</h2>
+    <p class="sec-desc">
+      아래 5개 요소는 <b>모든 본문 슬라이드에서 위치·크기·색이 완전히 동일</b>합니다.
+      마스터 슬라이드로 만들어 두고 내용만 바꾸세요.
+    </p>
+
+    <div class="card">
+      <h3>실제 크기 목업 (1920 × 1080)</h3>
+      <div class="stage" id="stage">
+        <div class="stage-inner" id="stage-inner">
+          <div class="slide">
+            <div class="s-title">슬라이드 타이틀</div>
+            <div class="s-sub">한 줄 부제가 들어가는 자리입니다</div>
+            <div class="s-divider"></div>
+            <div class="s-badge">SESSION 01</div>
+            <div class="s-body">본문 영역 · 1800 × 697</div>
+            <div class="s-foot">Living AI 스타트업 육성교육 ㅣ VS Code 바이브코딩</div>
+            <div class="s-track"><i></i></div>
+            <div class="s-page">03</div>
+
+            <!-- 치수 표시 -->
+            <div class="dim" style="left:60px;top:16px">↑ 44</div>
+            <div class="dim" style="left:8px;top:520px">60</div>
+            <div class="dim" style="right:8px;top:520px">60</div>
+            <div class="dim" style="left:60px;top:216px">─ 구분선 y=207</div>
+            <div class="dim" style="left:880px;bottom:22px">진행바 780 × 8</div>
+            <div class="dim" style="right:200px;bottom:52px">120 × 64 →</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>정확한 좌표표</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>요소</th><th>위치</th><th>크기</th><th>스타일</th></tr></thead>
+          <tbody>
+            <tr class="fixed"><td><b>타이틀</b><span class="pin">고정</span></td><td class="mono">left 60 / top 44</td><td class="mono">84px 높이</td><td>Bold 700 · Ink 900</td></tr>
+            <tr><td>부제</td><td class="mono">left 60 / top 150</td><td class="mono">28px</td><td>Medium 500 · Ink 500</td></tr>
+            <tr><td>헤더 구분선</td><td class="mono">left 60 ~ right 60 / y 207</td><td class="mono">1px</td><td>Line 200 #E3E5EE</td></tr>
+            <tr><td>SESSION 배지</td><td class="mono">right 60 / top 44</td><td class="mono">높이 56 / 좌우패딩 28</td><td>Violet 400 · radius 10 · 24px Bold</td></tr>
+            <tr><td>번호 원형(선택)</td><td class="mono">타이틀 왼쪽, 간격 24</td><td class="mono">지름 72</td><td>Navy 800 · 36px ExtraBold 흰색</td></tr>
+            <tr class="fixed"><td><b>푸터 강의주제</b><span class="pin">고정</span></td><td class="mono">left 60 / bottom 36</td><td class="mono">22px</td><td>SemiBold 600 · Blue 600</td></tr>
+            <tr><td>진행바</td><td class="mono">left 880 / bottom 64</td><td class="mono">780 × 8</td><td>빈칸 Grey 300 · 채움 Blue 600 · radius 99</td></tr>
+            <tr class="fixed"><td><b>페이지 배지</b><span class="pin">고정</span></td><td class="mono">right 60 / bottom 36</td><td class="mono">120 × 64</td><td>Blue 700 · radius 14 · 32px Bold 흰색</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>푸터 문구 통일안</h3>
+      <div class="rule">
+        전 슬라이드 동일하게 <b>“Living AI 스타트업 육성교육 ㅣ VS Code 바이브코딩”</b>
+        <br />구분 기호는 세로줄 <code class="inline">ㅣ</code> 앞뒤 공백 1칸. 세션이 바뀌어도 이 문구는 바뀌지 않습니다.
+      </div>
+
+      <div class="tip">
+        <b>진행바는 전체 장수 기준 하나로.</b> 두 개 덱을 합치면서 번호가 리셋됐는데,
+        <b>1 ~ 40 통합 번호</b>로 다시 매기고 진행바도 <code class="inline">현재쪽 ÷ 40</code>으로 계산합니다.
+        퍼센트 숫자나 "10 / 30" 표기는 <b>넣지 않습니다</b> — 막대만으로 충분합니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 06 템플릿 ═══ -->
+  <section id="templates">
+    <h2 class="sec"><span class="no">06</span> 슬라이드 템플릿 6종</h2>
+    <p class="sec-desc">새 슬라이드를 만들 때는 반드시 아래 6가지 중 하나를 골라 씁니다. 새 레이아웃을 즉흥으로 만들지 않습니다.</p>
+
+    <div class="tpl-grid">
+      <div class="tpl">
+        <div class="head"><b>A. 표지</b><span>강의 시작 1장</span></div>
+        <div class="mini dark">
+          <div style="width:44%;height:7px;border-radius:3px;background:#8678EC"></div>
+          <div style="width:78%;height:15px;border-radius:3px;background:#fff;margin-top:9px"></div>
+          <div style="width:62%;height:15px;border-radius:3px;background:#fff;margin-top:5px"></div>
+          <div style="width:40%;height:8px;border-radius:3px;background:#E4D3BF;margin-top:9px"></div>
+          <div style="display:flex;gap:5px;margin-top:14px">
+            <div style="width:34px;height:19px;border-radius:4px;background:#8678EC"></div>
+            <div style="width:34px;height:19px;border-radius:4px;background:#8678EC"></div>
+            <div style="width:34px;height:19px;border-radius:4px;background:#E4D3BF"></div>
+          </div>
+          <div style="position:absolute;right:14px;top:26px;width:66px;height:66px;border-radius:12px;
+            background:linear-gradient(145deg,#8C8FA8,#6E7288)"></div>
+        </div>
+      </div>
+
+      <div class="tpl">
+        <div class="head"><b>B. 섹션 표지</b><span>세션이 바뀔 때</span></div>
+        <div class="mini dark">
+          <div style="width:30%;height:7px;border-radius:3px;background:#8678EC;margin-top:24px"></div>
+          <div style="width:66%;height:14px;border-radius:3px;background:#fff;margin-top:8px"></div>
+          <div style="width:48%;height:7px;border-radius:3px;background:#C9CEE6;margin-top:7px"></div>
+          <div style="position:absolute;right:16px;top:34px;width:56px;height:56px;border-radius:50%;
+            background:linear-gradient(145deg,#8678EC,#6A5AE8)"></div>
+        </div>
+      </div>
+
+      <div class="tpl">
+        <div class="head"><b>C. 목록형</b><span>순서 · 단계 나열</span></div>
+        <div class="mini">
+          <div class="m-badge"></div>
+          <div class="m-t" style="width:46%"></div><div class="m-s" style="width:62%"></div>
+          <div class="m-line"></div>
+          <div class="m-box" style="height:15px;margin-bottom:5px"></div>
+          <div class="m-box" style="height:15px;margin-bottom:5px;background:#F4F3FD"></div>
+          <div class="m-box" style="height:15px;margin-bottom:5px"></div>
+          <div class="m-box" style="height:15px;background:#F4F3FD"></div>
+          <div class="m-foot"><i></i><u></u><s></s></div>
+        </div>
+      </div>
+
+      <div class="tpl">
+        <div class="head"><b>D. 좌우 분할</b><span>설명 + 3D 아이콘</span></div>
+        <div class="mini">
+          <div class="m-badge"></div>
+          <div class="m-t" style="width:42%"></div><div class="m-s" style="width:56%"></div>
+          <div class="m-line"></div>
+          <div style="display:flex;gap:8px">
+            <div style="flex:1.35">
+              <div class="m-box" style="height:14px;margin-bottom:5px"></div>
+              <div class="m-box" style="height:14px;margin-bottom:5px"></div>
+              <div class="m-box" style="height:14px"></div>
+            </div>
+            <div style="flex:1;border-radius:8px;background:linear-gradient(145deg,#B9AFF3,#6A5AE8)"></div>
+          </div>
+          <div class="m-foot"><i></i><u></u><s></s></div>
+        </div>
+      </div>
+
+      <div class="tpl">
+        <div class="head"><b>E. 비교형</b><span>전 · 후 / 좋음 · 나쁨</span></div>
+        <div class="mini">
+          <div class="m-badge"></div>
+          <div class="m-t" style="width:38%"></div><div class="m-s" style="width:50%"></div>
+          <div class="m-line"></div>
+          <div style="display:flex;gap:8px">
+            <div class="m-box" style="flex:1;height:52px;background:#F7F7F9"></div>
+            <div class="m-box" style="flex:1;height:52px;background:#F4F3FD;border-color:#D9D4F7"></div>
+          </div>
+          <div class="m-foot"><i></i><u></u><s></s></div>
+        </div>
+      </div>
+
+      <div class="tpl">
+        <div class="head"><b>F. 실습형</b><span>따라하기 · 과제</span></div>
+        <div class="mini">
+          <div class="m-badge"></div>
+          <div class="m-t" style="width:50%"></div><div class="m-s" style="width:40%"></div>
+          <div class="m-line"></div>
+          <div style="height:20px;border-radius:6px;background:#0D2371;margin-bottom:6px"></div>
+          <div class="m-box" style="height:13px;margin-bottom:5px"></div>
+          <div style="height:20px;border-radius:6px;background:#ECE9FA;border-left:3px solid #6A5AE8"></div>
+          <div class="m-foot"><i></i><u></u><s></s></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <h3>템플릿 선택 기준</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>내용 성격</th><th>템플릿</th><th>3D 아이콘</th></tr></thead>
+          <tbody>
+            <tr><td>강의 시작</td><td>A 표지</td><td>히어로 1개 (대형)</td></tr>
+            <tr><td>세션 전환</td><td>B 섹션 표지</td><td>히어로 1개 (중형)</td></tr>
+            <tr><td>단계·순서 나열</td><td>C 목록형</td><td>줄마다 소형 또는 우측 히어로 1개</td></tr>
+            <tr><td>개념 설명</td><td>D 좌우 분할</td><td>우측 히어로 1개 (대형)</td></tr>
+            <tr><td>잘못된 방법 vs 올바른 방법</td><td>E 비교형</td><td>각 칸에 소형 1개씩</td></tr>
+            <tr><td>실습 지시 · 과제</td><td>F 실습형</td><td>우측 히어로 1개</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 07 컴포넌트 ═══ -->
+  <section id="components">
+    <h2 class="sec"><span class="no">07</span> 컴포넌트</h2>
+    <p class="sec-desc">본문 안에서 쓰는 조각들입니다. 이미 기존 슬라이드에 있는 것을 규격화했습니다.</p>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>컴포넌트</th><th>규격</th><th>용도</th></tr></thead>
+          <tbody>
+            <tr><td><b>번호 원형</b></td><td class="mono">지름 64 · Navy 800 · 32px ExtraBold</td><td>순서가 있는 목록 앞</td></tr>
+            <tr><td><b>번호 원형(보라)</b></td><td class="mono">지름 56 · Violet 600 · 28px Bold</td><td>본문 안쪽 하위 순서</td></tr>
+            <tr><td><b>기본 카드</b></td><td class="mono">흰색 · radius 18 · 테두리 1px #E3E5EE · 패딩 28</td><td>목록 한 줄</td></tr>
+            <tr><td><b>줄무늬 카드</b></td><td class="mono">홀수 흰색 / 짝수 #F4F3FD</td><td>4줄 이상 목록의 가독성</td></tr>
+            <tr><td><b>코드바</b></td><td class="mono">Navy 800 · radius 12 · 높이 88 · 고정폭 40px 흰색</td><td>URL · 명령어 · 파일명</td></tr>
+            <tr><td><b>팁 박스</b></td><td class="mono">Violet 100 · 좌측 6px Violet 600 바 · radius 0 12 12 0</td><td>알아두면 좋은 점</td></tr>
+            <tr><td><b>경고 박스</b></td><td class="mono">#FEF2F2 · 좌측 6px #EF4D5A 바</td><td>반드시 지켜야 할 것</td></tr>
+            <tr><td><b>체크 항목</b></td><td class="mono">Violet 600 원형 체크 지름 44 + 26px 텍스트</td><td>완료 조건 확인</td></tr>
+            <tr><td><b>알약 태그</b></td><td class="mono">Violet 100 배경 · radius 999 · 22px SemiBold</td><td>짧은 상태 표시</td></tr>
+            <tr><td><b>시간 배지</b></td><td class="mono">흰색 · 2px Violet 600 테두리 · radius 999 · 26px Bold</td><td>실습 소요시간 (우측 상단)</td></tr>
+            <tr><td><b>강조 한 줄</b></td><td class="mono">가운데 정렬 · 40px ExtraBold · Navy 800</td><td>슬라이드 핵심 메시지 (하단)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tip">
+        <b>한 슬라이드에 강조는 하나만.</b> 팁 박스 · 경고 박스 · 강조 한 줄 중
+        <b>최대 1개</b>만 사용합니다. 세 개가 동시에 있으면 아무것도 강조되지 않습니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 08 3D 아이콘 ═══ -->
+  <section id="icon3d">
+    <h2 class="sec"><span class="no">08</span> 3D 아이콘 가이드</h2>
+    <p class="sec-desc">
+      모든 아이콘은 <b>3D 아이콘 한 가지 스타일</b>로 통일합니다.
+      선 아이콘 · 이모지 · 실사 사진과 섞어 쓰지 않습니다.
+    </p>
+
+    <div class="card">
+      <h3>스타일 규격 8가지</h3>
+      <div class="icon-rules">
+        <div class="irule"><b>① 재질</b><span>말랑한 클레이(clay) 느낌. 무광 바탕에 아주 옅은 광택 하이라이트 하나</span></div>
+        <div class="irule"><b>② 모서리</b><span>모든 모서리를 둥글게(rounded). 날카로운 각 금지</span></div>
+        <div class="irule"><b>③ 시점</b><span>정면에서 살짝 위, 3/4 각도로 일관. 아이콘마다 각도가 다르면 안 됨</span></div>
+        <div class="irule"><b>④ 조명</b><span>광원 1개, 왼쪽 위에서. 그림자는 오른쪽 아래로</span></div>
+        <div class="irule"><b>⑤ 그림자</b><span>아래쪽 부드러운 그림자, 불투명도 15~20%. 진한 그림자 금지</span></div>
+        <div class="irule"><b>⑥ 색</b><span>Violet 600 · Violet 400 · 회색 · Sand 300 + 흰색. <b>한 아이콘에 4색 이내</b></span></div>
+        <div class="irule"><b>⑦ 배경</b><span>반드시 <b>투명 PNG</b>. 흰 사각형이 남아 있으면 슬라이드에서 티가 남</span></div>
+        <div class="irule"><b>⑧ 글자</b><span>아이콘 안에 글자·숫자를 넣지 않음 (한글 깨짐·번역 문제)</span></div>
+      </div>
+
+      <h3>크기와 배치</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>구분</th><th>크기</th><th>배치 위치</th><th>사용 개수</th></tr></thead>
+          <tbody>
+            <tr><td><b>히어로 (대형)</b></td><td class="mono">440 ~ 520px</td><td>우측, 안전여백 60px 안쪽</td><td>슬라이드당 1개</td></tr>
+            <tr><td><b>히어로 (중형)</b></td><td class="mono">280 ~ 340px</td><td>우측 또는 가운데</td><td>슬라이드당 1개</td></tr>
+            <tr><td><b>인라인 (카드 안)</b></td><td class="mono">72 × 72px</td><td>카드 왼쪽, 텍스트와 간격 24px</td><td>줄마다 1개</td></tr>
+            <tr><td><b>리스트 불릿</b></td><td class="mono">56 × 56px</td><td>줄 왼쪽 정렬</td><td>줄마다 1개</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warn">
+        <b>한 슬라이드에 히어로는 1개까지.</b> 인라인 아이콘을 쓰는 슬라이드에는 히어로를 넣지 않습니다.
+        아이콘이 많아지면 시선이 분산되어 오히려 내용이 안 읽힙니다.
+      </div>
+
+      <h3>슬라이드 주제별 아이콘 매핑</h3>
+      <p style="font-size:14px;color:var(--ink-500);margin-bottom:10px">
+        같은 개념에는 항상 같은 아이콘을 씁니다. 20쪽에서 "저장"에 쓴 아이콘을 35쪽에서 바꾸면 안 됩니다.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>주제</th><th>3D 아이콘 대상</th><th>주 색상</th></tr></thead>
+          <tbody>
+            <tr><td>설치 · 다운로드</td><td>아래 화살표 + 받침대</td><td>Violet 600</td></tr>
+            <tr><td>설정 · 환경</td><td>톱니바퀴</td><td>Violet 600 + 회색</td></tr>
+            <tr><td>폴더 · 프로젝트</td><td>열린 폴더</td><td>Sand 300</td></tr>
+            <tr><td>파일 · 문서</td><td>모서리 접힌 문서</td><td>흰색 + 회색</td></tr>
+            <tr><td>확장 프로그램</td><td>퍼즐 조각</td><td>Violet 400</td></tr>
+            <tr><td>AI · 자동화</td><td>반짝임(스파클) 또는 로봇 머리</td><td>Violet 600</td></tr>
+            <tr><td>코드 · 에디터</td><td>창(윈도우) + 코드 줄</td><td>회색 + 멀티컬러 줄</td></tr>
+            <tr><td>미리보기 · 브라우저</td><td>브라우저 창</td><td>회색 + Violet 400</td></tr>
+            <tr><td>저장 · 완료</td><td>원형 체크</td><td>Violet 600</td></tr>
+            <tr><td>배포 · 공개</td><td>로켓 또는 지구본</td><td>Violet 600</td></tr>
+            <tr><td>주소 · 링크</td><td>사슬 고리</td><td>Violet 400</td></tr>
+            <tr><td>데이터베이스</td><td>원통 3단</td><td>Violet 400 + 회색</td></tr>
+            <tr><td>통계 · 분석</td><td>막대그래프</td><td>Violet 600 + Sand 300</td></tr>
+            <tr><td>팁 · 아이디어</td><td>전구</td><td>흰색 + Sand 300</td></tr>
+            <tr><td>주의 · 경고</td><td>느낌표 삼각형</td><td>#EF4D5A (예외 허용)</td></tr>
+            <tr><td>시간 · 소요시간</td><td>시계 또는 모래시계</td><td>Violet 400</td></tr>
+            <tr><td>과제 · 체크리스트</td><td>클립보드 + 체크</td><td>Sand 300 + Violet 600</td></tr>
+            <tr><td>목표 · 완주</td><td>깃발 또는 트로피</td><td>Violet 600</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>아이콘 생성 프롬프트</h3>
+      <p style="font-size:14px;color:var(--ink-500);margin-bottom:4px">
+        AI 이미지 생성 도구에 아래를 붙여넣고 <code class="inline">{대상}</code>만 바꿉니다.
+        같은 프롬프트를 쓰면 40장 전체가 같은 스타일로 나옵니다.
+      </p>
+
+      <div class="prompt-box">
+        <div class="prompt-bar"><span class="prompt-label">기본 프롬프트 — {대상}만 교체</span><button class="copy-btn">복사</button></div>
+<pre>A single 3D icon of {대상}, soft clay render style, rounded edges,
+matte surface with one subtle glossy highlight, three-quarter view
+from slightly above, single soft light source from the upper left,
+soft ambient shadow beneath at 15% opacity,
+color palette strictly limited to violet #6A5AE8, light violet #8678EC,
+neutral grey #C9CDD8, warm sand #E4D3BF and white,
+no text, no letters, no numbers, no background,
+transparent PNG, centered composition, generous padding,
+clean modern startup education style, 1024x1024</pre>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-bar"><span class="prompt-label">제외 조건 (Negative prompt)</span><button class="copy-btn">복사</button></div>
+<pre>photorealistic, photograph, flat 2d icon, outline icon, line art,
+sharp edges, harsh shadow, multiple light sources, neon, glow,
+busy background, gradient background, text, watermark, logo,
+more than four colors, cartoon face, human figure</pre>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-bar"><span class="prompt-label">사용 예시 — 설치 아이콘</span><button class="copy-btn">복사</button></div>
+<pre>A single 3D icon of a download arrow pointing down into a tray,
+soft clay render style, rounded edges,
+matte surface with one subtle glossy highlight, three-quarter view
+from slightly above, single soft light source from the upper left,
+soft ambient shadow beneath at 15% opacity,
+color palette strictly limited to violet #6A5AE8, light violet #8678EC,
+neutral grey #C9CDD8, warm sand #E4D3BF and white,
+no text, no letters, no numbers, no background,
+transparent PNG, centered composition, generous padding,
+clean modern startup education style, 1024x1024</pre>
+      </div>
+
+      <div class="do-dont">
+        <div class="dd do">
+          <b>✅ 이렇게</b>
+          <ul>
+            <li>모든 아이콘을 <b>한 번에 몰아서</b> 생성 (같은 세션에서 뽑아야 톤이 맞음)</li>
+            <li>투명 PNG로 저장하고 파일명을 <code class="inline">icon-install.png</code>처럼 용도로 지정</li>
+            <li>같은 개념에는 처음 만든 아이콘을 끝까지 재사용</li>
+            <li>슬라이드에 얹기 전 <b>그림자 방향</b>이 모두 같은지 확인</li>
+          </ul>
+        </div>
+        <div class="dd dont">
+          <b>❌ 이렇게 하지 말 것</b>
+          <ul>
+            <li>필요할 때마다 <b>하나씩</b> 생성 (톤이 조금씩 달라짐)</li>
+            <li>3D 아이콘과 이모지·선 아이콘을 <b>같은 슬라이드에</b> 섞기</li>
+            <li>아이콘 안에 한글·영문 글자 넣기</li>
+            <li>배경이 흰 사각형인 채로 붙여넣기</li>
+            <li>한 슬라이드에 히어로 아이콘 2개 이상</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tip">
+        <b>보관 규칙</b> — <code class="inline">/assets/icons/</code> 폴더를 만들고 전부 여기에 모읍니다.
+        슬라이드마다 새로 만들지 말고 <b>폴더에서 꺼내 쓰는 방식</b>으로 관리해야 40장 통일이 유지됩니다.
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ 09 체크리스트 ═══ -->
+  <section id="checklist">
+    <h2 class="sec"><span class="no">09</span> 슬라이드 완성 체크리스트</h2>
+    <p class="sec-desc">한 장을 만들 때마다 아래 10가지를 확인합니다.</p>
+
+    <div class="card">
+      <div class="check"><span class="num">1</span><div><b>타이틀 84px</b> — 크기를 조정하지 않았는가. 한 줄 20자 이내인가</div></div>
+      <div class="check"><span class="num">2</span><div><b>푸터 강의주제 22px</b> — 문구가 “Living AI 스타트업 육성교육 ㅣ VS Code 바이브코딩” 그대로인가</div></div>
+      <div class="check"><span class="num">3</span><div><b>페이지 배지 120×64 / 32px</b> — 색이 Blue 700이고 번호가 통합 번호(1~40)인가</div></div>
+      <div class="check"><span class="num">4</span><div><b>SESSION 배지</b> — 우측 상단 고정 위치, 세션 번호가 맞는가</div></div>
+      <div class="check"><span class="num">5</span><div><b>본문 697px</b> — 내용이 푸터를 침범하지 않는가</div></div>
+      <div class="check"><span class="num">6</span><div><b>템플릿 6종</b> 중 하나를 썼는가. 새 레이아웃을 즉흥으로 만들지 않았는가</div></div>
+      <div class="check"><span class="num">7</span><div><b>강조는 1개</b> — 팁·경고·강조문장 중 하나만 있는가</div></div>
+      <div class="check"><span class="num">8</span><div><b>3D 아이콘</b> — 히어로 1개 이하, 배경 투명, 그림자 방향 동일한가</div></div>
+      <div class="check"><span class="num">9</span><div><b>색상</b> — 팔레트 밖의 색을 쓰지 않았는가</div></div>
+      <div class="check"><span class="num">10</span><div><b>여백 8의 배수</b> — 요소 사이 간격이 8·16·24·32·40 중 하나인가</div></div>
+
+      <div class="rule" style="margin-top:18px">
+        <b>가장 빠른 점검법</b> — 완성한 슬라이드를 <b>축소해서 4장씩 나란히</b> 놓고 보세요.
+        타이틀 높이와 푸터 위치가 흔들리면 바로 눈에 띕니다.
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    강의 슬라이드 디자인 가이드 · Living AI 스타트업 육성교육<br />
+    기준 파일 : MVP_VSCode_바이브코딩_이선우.pdf (40장 분석)
+  </footer>
+
+  </main>
+</div>
+
+<script>
+  /* ── 슬라이드 목업을 화면 폭에 맞게 축소 ── */
+  function fitStage(){
+    var stage = document.getElementById("stage");
+    var inner = document.getElementById("stage-inner");
+    if(!stage || !inner) return;
+    var scale = stage.clientWidth / 1920;
+    inner.style.transform = "scale(" + scale + ")";
+    stage.style.height = (1080 * scale) + "px";
+  }
+  window.addEventListener("resize", fitStage);
+  fitStage();
+  window.addEventListener("load", fitStage);
+
+  /* ── 왼쪽 메뉴 : 현재 위치 표시 ── */
+  var sideLinks = Array.prototype.slice.call(document.querySelectorAll(".side-link"));
+  var targets = sideLinks.map(function(l){
+    return { link:l, el:document.querySelector(l.getAttribute("href")) };
+  }).filter(function(t){ return t.el; });
+  var current = null;
+
+  function topOf(el){ return el.getBoundingClientRect().top + window.scrollY; }
+  function offset(){
+    var sb = document.querySelector(".sidebar");
+    return window.innerWidth <= 1040 ? sb.offsetHeight + 14 : 20;
+  }
+  function update(){
+    var line = window.scrollY + offset() + 60, found = targets[0];
+    for (var i=0;i<targets.length;i++) if (topOf(targets[i].el) <= line) found = targets[i];
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) found = targets[targets.length-1];
+    if (found && found.link !== current){
+      sideLinks.forEach(function(l){ l.classList.remove("active"); });
+      found.link.classList.add("active");
+      current = found.link;
+      found.link.scrollIntoView({ block:"nearest", inline:"nearest" });
+    }
+  }
+  var ticking = false;
+  window.addEventListener("scroll", function(){
+    if (!ticking){ ticking = true;
+      requestAnimationFrame(function(){ update(); ticking = false; }); }
+  }, { passive:true });
+  window.addEventListener("resize", update);
+  update();
+
+  sideLinks.forEach(function(l){
+    l.addEventListener("click", function(e){
+      var el = document.querySelector(l.getAttribute("href"));
+      if (!el) return;
+      e.preventDefault();
+      window.scrollTo({ top: topOf(el) - offset(), behavior:"smooth" });
+    });
+  });
+
+  /* ── 프롬프트 복사 ── */
+  document.querySelectorAll(".copy-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var text = btn.closest(".prompt-box").querySelector("pre").textContent;
+      copyText(text, function(ok){
+        btn.textContent = ok ? "복사됨 ✓" : "복사 실패";
+        btn.classList.toggle("done", ok);
+        setTimeout(function(){ btn.textContent = "복사"; btn.classList.remove("done"); }, 1600);
+      });
+    });
+  });
+  function copyText(text, done){
+    if (navigator.clipboard && window.isSecureContext){
+      navigator.clipboard.writeText(text).then(function(){ done(true); },
+        function(){ done(fallback(text)); });
+    } else { done(fallback(text)); }
+  }
+  function fallback(text){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch(e){ console.error("복사 실패:", e); return false; }
+  }
+</script>
+</body>
+</html>

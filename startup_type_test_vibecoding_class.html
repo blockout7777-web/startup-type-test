@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>120분 바이브코딩 실습 | 창업가 유형 테스트 만들기</title>
+<style>
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --text:#172033;
+  --muted:#667085;
+  --line:#e6e9f0;
+  --primary:#6d5dfc;
+  --primary-dark:#5446d8;
+  --soft:#efedff;
+  --success:#16a34a;
+  --warning:#b45309;
+  --code:#151827;
+  --shadow:0 10px 30px rgba(31,41,55,.08);
+  --radius:22px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Pretendard, "Noto Sans KR", Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+a{text-decoration:none;color:inherit}
+button{font:inherit}
+.hero{
+  background:linear-gradient(135deg,#211f45 0%, #5849dc 55%, #8c7cff 100%);
+  color:#fff;
+  padding:72px 20px 60px;
+}
+.hero-inner{max-width:1100px;margin:auto}
+.badge{
+  display:inline-flex;gap:8px;align-items:center;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);
+  padding:8px 14px;border-radius:999px;font-size:14px
+}
+h1{font-size:clamp(34px,5vw,64px);line-height:1.15;margin:22px 0 18px;letter-spacing:-.03em}
+.hero p{font-size:18px;max-width:760px;color:rgba(255,255,255,.88)}
+.hero-grid{
+  margin-top:34px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px
+}
+.hero-box{
+  background:rgba(255,255,255,.12);padding:16px;border-radius:16px;
+  border:1px solid rgba(255,255,255,.16)
+}
+.hero-box strong{display:block;font-size:22px}
+.hero-box span{font-size:13px;color:rgba(255,255,255,.8)}
+.wrap{max-width:1100px;margin:auto;padding:34px 20px 90px}
+.notice{
+  margin-top:-28px;background:#fff;border-radius:20px;padding:20px 24px;
+  box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start
+}
+.notice .icon{font-size:26px}
+.notice strong{display:block;margin-bottom:4px}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:28px;margin-top:34px}
+.sidebar{
+  position:sticky;top:18px;height:max-content;background:var(--card);
+  border:1px solid var(--line);border-radius:18px;padding:18px
+}
+.sidebar h3{font-size:15px;margin:0 0 12px;color:var(--muted)}
+.nav a{
+  display:block;padding:9px 10px;border-radius:10px;font-size:14px;color:#475467
+}
+.nav a:hover{background:var(--soft);color:var(--primary-dark)}
+.main{min-width:0}
+.section-title{margin:0 0 18px;font-size:30px;letter-spacing:-.02em}
+.step{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:28px;margin-bottom:22px;box-shadow:0 4px 18px rgba(17,24,39,.03)
+}
+.step-head{display:flex;gap:16px;align-items:flex-start;margin-bottom:18px}
+.num{
+  width:46px;height:46px;border-radius:14px;background:var(--soft);color:var(--primary-dark);
+  display:grid;place-items:center;font-weight:800;font-size:18px;flex:none
+}
+.step h2{font-size:24px;margin:0 0 4px;letter-spacing:-.02em}
+.step .desc{margin:0;color:var(--muted)}
+.goal{
+  background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:16px 0
+}
+.goal strong{color:#344054}
+.prompt-box{position:relative;margin-top:14px}
+.prompt-label{
+  display:flex;justify-content:space-between;align-items:center;
+  background:#24283b;color:#fff;padding:12px 14px;border-radius:14px 14px 0 0;
+  font-size:14px
+}
+.copy-btn{
+  border:0;background:#fff;color:#24283b;padding:7px 11px;border-radius:9px;
+  cursor:pointer;font-weight:700;font-size:13px
+}
+.copy-btn:hover{transform:translateY(-1px)}
+pre{
+  margin:0;background:var(--code);color:#eef2ff;padding:20px;overflow:auto;
+  white-space:pre-wrap;border-radius:0 0 14px 14px;font-size:14px;line-height:1.75
+}
+.check{
+  margin-top:15px;display:flex;gap:10px;align-items:flex-start;color:#475467;font-size:14px
+}
+.check input{margin-top:6px;transform:scale(1.15)}
+.small-card-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+.small-card{
+  background:#fafafa;border:1px solid var(--line);border-radius:14px;padding:15px
+}
+.small-card strong{display:block}
+.small-card span{font-size:13px;color:var(--muted)}
+.tip{
+  border-left:4px solid var(--primary);background:#f7f6ff;padding:14px 16px;
+  border-radius:0 12px 12px 0;margin:15px 0;font-size:14px
+}
+.warning{
+  border-left-color:#f59e0b;background:#fff8eb;color:#7c4a03
+}
+.finish{
+  background:linear-gradient(135deg,#1d2434,#4037a8);color:#fff;border:none
+}
+.finish p{color:rgba(255,255,255,.82)}
+.done-btn{
+  display:inline-block;background:#fff;color:#322b7e;padding:13px 18px;border-radius:12px;
+  font-weight:800;margin-top:8px
+}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:36px}
+@media(max-width:860px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:static}
+  .hero-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .hero{padding-top:48px}
+  .hero-grid{grid-template-columns:1fr}
+  .step{padding:20px}
+  .small-card-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="badge">🚀 VS Code 바이브코딩 실습 · 성인/창업자 과정</span>
+    <h1>120분 만에 만드는<br>창업가 유형 테스트</h1>
+    <p>프롬프트를 복사해 AI에게 요청하고, VS Code에서 수정하고, Supabase에 결과를 저장한 뒤 GitHub Pages로 실제 URL까지 배포합니다.</p>
+    <div class="hero-grid">
+      <div class="hero-box"><strong>12문항</strong><span>창업 성향 테스트</span></div>
+      <div class="hero-box"><strong>4유형</strong><span>IDEA · ACTION · DATA · PEOPLE</span></div>
+      <div class="hero-box"><strong>무료 DB</strong><span>Supabase 연동</span></div>
+      <div class="hero-box"><strong>실제 URL</strong><span>GitHub Pages 배포</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="notice">
+    <div class="icon">💡</div>
+    <div>
+      <strong>실습 방법</strong>
+      아래 단계를 위에서부터 순서대로 진행하세요. 각 단계의 <b>프롬프트 복사</b> 버튼을 누른 뒤 사용하는 AI 코딩 도구에 붙여넣으면 됩니다.
+    </div>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h3>실습 목차</h3>
+      <nav class="nav">
+        <a href="#step1">1. 프로젝트 만들기</a>
+        <a href="#step2">2. 기본 화면 생성</a>
+        <a href="#step3">3. 질문·점수 기능</a>
+        <a href="#step4">4. 결과 화면 개선</a>
+        <a href="#step5">5. Supabase 준비</a>
+        <a href="#step6">6. DB 연결</a>
+        <a href="#step7">7. 참여자 통계</a>
+        <a href="#step8">8. 디자인 꾸미기</a>
+        <a href="#step9">9. 오류 점검</a>
+        <a href="#step10">10. GitHub 배포</a>
+        <a href="#finish">완성 확인</a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <h2 class="section-title">단계별 실습</h2>
+
+      <section class="step" id="step1">
+        <div class="step-head">
+          <div class="num">01</div>
+          <div><h2>프로젝트 폴더 만들기</h2><p class="desc">VS Code에서 실습용 폴더를 만들고 3개의 파일만 준비합니다.</p></div>
+        </div>
+        <div class="goal"><strong>목표</strong> · index.html / style.css / script.js 생성</div>
+        <div class="small-card-grid">
+          <div class="small-card"><strong>폴더명</strong><span>startup-type-test</span></div>
+          <div class="small-card"><strong>파일 3개</strong><span>index.html · style.css · script.js</span></div>
+        </div>
+        <label class="check"><input type="checkbox"> VS Code에서 startup-type-test 폴더를 열었습니다.</label>
+      </section>
+
+      <section class="step" id="step2">
+        <div class="step-head">
+          <div class="num">02</div>
+          <div><h2>기본 웹페이지 생성</h2><p class="desc">첫 번째 프롬프트로 테스트의 전체 뼈대를 만듭니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ① 기본 화면 만들기</span><button class="copy-btn" data-target="p1">복사</button></div>
+          <pre id="p1">VS Code에서 실행할 수 있는 웹페이지를 만들어줘.
+
+프로젝트명은 "나는 어떤 창업가일까?"야.
+
+HTML, CSS, JavaScript만 사용하고
+index.html, style.css, script.js 3개의 파일로 분리해줘.
+
+사용자가 12개의 질문에 답하면 다음 4가지 창업 유형 중 하나가 나오도록 만들어줘.
+
+1. IDEA — 아이디어 탐험가
+2. ACTION — 실행 돌격대장
+3. DATA — 데이터 전략가
+4. PEOPLE — 관계 연결자
+
+조건:
+- 첫 화면에 제목과 간단한 설명 표시
+- 닉네임 입력칸 만들기
+- "테스트 시작" 버튼 만들기
+- 질문은 한 화면에 하나씩 표시
+- 각 질문마다 선택지 4개 제공
+- 선택하면 다음 질문으로 자동 이동
+- 현재 질문 번호와 진행률 표시
+- 총 12문항
+- 가장 높은 점수 유형을 결과로 표시
+- 결과에는 유형명, 설명, 강점, 주의점, 추천 역할 표시
+- 모바일에서도 보기 좋게 반응형으로 제작
+- 밝고 전문적인 스타트업 서비스 스타일
+- 초보자가 이해할 수 있도록 중요한 JavaScript 부분에 한글 주석 추가</pre>
+        </div>
+        <label class="check"><input type="checkbox"> AI가 생성한 코드를 3개 파일에 각각 붙여넣고 실행했습니다.</label>
+      </section>
+
+      <section class="step" id="step3">
+        <div class="step-head">
+          <div class="num">03</div>
+          <div><h2>질문과 점수 기능 점검</h2><p class="desc">질문이 자연스럽고 네 유형 점수가 제대로 계산되는지 확인합니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ② 질문·점수 개선</span><button class="copy-btn" data-target="p2">복사</button></div>
+          <pre id="p2">현재 만든 창업가 유형 테스트의 질문과 점수 로직을 점검해줘.
+
+다음 기준으로 수정해줘.
+
+- 총 12문항 유지
+- 각 문항은 정답이 없는 성향 질문
+- 각 질문의 선택지 4개는 IDEA, ACTION, DATA, PEOPLE에 각각 1점씩 연결
+- 질문 주제는 다음을 골고루 포함
+  1. 아이디어가 생겼을 때 행동
+  2. 사업에서 중요하게 생각하는 것
+  3. 팀에서 맡는 역할
+  4. 문제가 생겼을 때 행동
+  5. 제품 출시 방식
+  6. 경쟁자 대응
+  7. 고객 불만 대응
+  8. 새로운 기술 대응
+  9. 투자금 활용
+  10. 실패 가능성 대응
+  11. 팀원 채용 기준
+  12. 창업 성공 조건
+- 특정 유형이 유리해 보이지 않도록 문장을 균형 있게 작성
+- 선택 즉시 다음 질문으로 이동
+- 마지막 질문 뒤에는 결과 화면 표시
+- 기존 디자인은 최대한 유지</pre>
+        </div>
+        <label class="check"><input type="checkbox"> 12문항을 모두 눌러 결과가 정상적으로 나오는지 확인했습니다.</label>
+      </section>
+
+      <section class="step" id="step4">
+        <div class="step-head">
+          <div class="num">04</div>
+          <div><h2>결과 화면 완성</h2><p class="desc">테스트 결과가 '공유하고 싶은 화면'처럼 보이게 만듭니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ③ 결과 화면 개선</span><button class="copy-btn" data-target="p3">복사</button></div>
+          <pre id="p3">현재 테스트의 결과 화면을 더 완성도 있게 개선해줘.
+
+각 유형마다 다음 내용을 보여줘.
+
+IDEA — 아이디어 탐험가
+ACTION — 실행 돌격대장
+DATA — 데이터 전략가
+PEOPLE — 관계 연결자
+
+결과 화면 구성:
+- 유형 이모지 또는 간단한 아이콘
+- 유형명
+- 한 줄 설명
+- 강점 3~4개
+- 주의할 점 1~2개
+- 추천 창업 역할
+- IDEA, ACTION, DATA, PEOPLE의 점수를 막대 형태로 시각화
+- "다시 테스트" 버튼
+- 기존 테스트 기능은 변경하지 말 것
+- 모바일에서도 보기 좋게 유지</pre>
+        </div>
+        <label class="check"><input type="checkbox"> 결과 유형별 설명과 막대그래프가 표시됩니다.</label>
+      </section>
+
+      <section class="step" id="step5">
+        <div class="step-head">
+          <div class="num">05</div>
+          <div><h2>Supabase 데이터베이스 준비</h2><p class="desc">테스트 결과를 저장할 무료 DB를 만듭니다.</p></div>
+        </div>
+        <div class="goal"><strong>테이블명</strong> · test_results</div>
+        <pre>권장 컬럼
+
+id              bigint
+nickname        text
+result_type     text
+idea_score      integer
+action_score    integer
+data_score      integer
+people_score    integer
+created_at      timestamp</pre>
+        <div class="tip warning">⚠️ 수업용 프로젝트에서는 개인의 민감정보를 저장하지 마세요. 닉네임 정도만 사용하는 것이 좋습니다.</div>
+        <label class="check"><input type="checkbox"> Supabase 프로젝트와 test_results 테이블을 만들었습니다.</label>
+      </section>
+
+      <section class="step" id="step6">
+        <div class="step-head">
+          <div class="num">06</div>
+          <div><h2>Supabase 연결</h2><p class="desc">테스트가 끝나면 결과가 실제 DB에 저장되게 합니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ④ DB 연결</span><button class="copy-btn" data-target="p4">복사</button></div>
+          <pre id="p4">현재 만든 창업가 유형 테스트에 Supabase 데이터베이스를 연결해줘.
+
+Supabase JavaScript v2 CDN 방식을 사용해줘.
+
+test_results 테이블에 다음 데이터를 저장해줘.
+
+- nickname
+- result_type
+- idea_score
+- action_score
+- data_score
+- people_score
+- created_at
+
+조건:
+- 사용자가 테스트를 완료하면 결과를 Supabase에 저장
+- 저장이 실패해도 결과 화면은 정상적으로 표시
+- Supabase URL과 공개용 키는 script.js 상단에서 쉽게 수정하도록 작성
+- URL과 Key를 입력할 위치에 한글 주석 표시
+- 기존 테스트 기능과 디자인은 변경하지 않기
+- 오류가 나면 console에 원인을 확인할 수 있도록 처리</pre>
+        </div>
+        <div class="tip">💡 AI가 코드를 수정한 뒤 script.js 상단의 SUPABASE_URL, SUPABASE_KEY 값을 자신의 프로젝트 값으로 교체하세요.</div>
+        <label class="check"><input type="checkbox"> 테스트 후 Supabase 테이블에 새로운 데이터가 저장됩니다.</label>
+      </section>
+
+      <section class="step" id="step7">
+        <div class="step-head">
+          <div class="num">07</div>
+          <div><h2>참여자 통계 추가</h2><p class="desc">DB를 읽어서 전체 참여자의 유형 분포를 보여줍니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ⑤ 통계 기능</span><button class="copy-btn" data-target="p5">복사</button></div>
+          <pre id="p5">Supabase의 test_results 데이터를 읽어서 결과 화면 아래에 전체 참여자의 창업가 유형 통계를 추가해줘.
+
+조건:
+- IDEA, ACTION, DATA, PEOPLE 각각의 참여 인원 계산
+- 전체 참여자 수 표시
+- 유형별 비율(%) 계산
+- 막대그래프로 표시
+- 참여 인원이 0명이어도 오류가 나지 않게 처리
+- DB 데이터를 불러오지 못하면 "통계를 불러올 수 없습니다." 표시
+- 테스트 결과 화면은 항상 정상적으로 유지
+- 기존 기능은 삭제하지 않기</pre>
+        </div>
+        <label class="check"><input type="checkbox"> 내 결과 아래에 전체 참여자 통계가 표시됩니다.</label>
+      </section>
+
+      <section class="step" id="step8">
+        <div class="step-head">
+          <div class="num">08</div>
+          <div><h2>나만의 디자인 만들기</h2><p class="desc">기능은 그대로 두고 색상과 분위기만 바꿉니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ⑥ 디자인 개선</span><button class="copy-btn" data-target="p6">복사</button></div>
+          <pre id="p6">현재 웹페이지의 기능은 절대 수정하지 말고 디자인만 개선해줘.
+
+디자인 방향:
+- 밝고 신뢰감 있는 스타트업 서비스 느낌
+- 배경은 밝은 아이보리 또는 연한 회색
+- 보라색 또는 파란색을 포인트 컬러로 사용
+- 카드 모서리는 둥글게
+- 버튼은 크고 명확하게
+- 버튼 hover 효과 추가
+- 질문 카드와 결과 카드를 구분
+- 결과 유형별로 다른 이모지 사용
+- 스마트폰에서도 버튼과 글자가 잘 보이도록 반응형 유지
+- 너무 화려한 애니메이션은 사용하지 않기</pre>
+        </div>
+        <div class="tip">🎨 같은 기능이라도 색상과 문구를 바꾸면 각자의 사업 아이디어로 쉽게 변형할 수 있습니다.</div>
+        <label class="check"><input type="checkbox"> 내가 원하는 스타일로 디자인을 수정했습니다.</label>
+      </section>
+
+      <section class="step" id="step9">
+        <div class="step-head">
+          <div class="num">09</div>
+          <div><h2>오류 점검</h2><p class="desc">배포 전에 한 번에 점검하도록 AI에게 요청합니다.</p></div>
+        </div>
+        <div class="prompt-box">
+          <div class="prompt-label"><span>프롬프트 ⑦ 최종 점검</span><button class="copy-btn" data-target="p7">복사</button></div>
+          <pre id="p7">현재 프로젝트를 배포하기 전에 전체 코드를 점검해줘.
+
+점검 항목:
+1. index.html, style.css, script.js 연결 오류
+2. 테스트 시작 버튼 정상 작동
+3. 12개 질문 정상 진행
+4. 점수 계산 오류 여부
+5. 결과 유형 정상 표시
+6. Supabase 저장 성공 여부
+7. Supabase 통계 조회 정상 작동
+8. 모바일 화면 깨짐 여부
+9. JavaScript 콘솔 오류 여부
+10. GitHub Pages 같은 정적 호스팅에서 실행 가능한 구조인지 확인
+
+문제가 있다면 수정해주고,
+무엇을 수정했는지 초보자도 알 수 있도록 간단히 설명해줘.</pre>
+        </div>
+        <label class="check"><input type="checkbox"> 콘솔 오류 없이 처음부터 끝까지 테스트했습니다.</label>
+      </section>
+
+      <section class="step" id="step10">
+        <div class="step-head">
+          <div class="num">10</div>
+          <div><h2>GitHub Pages로 배포</h2><p class="desc">완성한 프로젝트를 인터넷에 공개하고 URL을 만듭니다.</p></div>
+        </div>
+        <div class="goal"><strong>추천 저장소 이름</strong> · startup-type-test</div>
+        <div class="small-card-grid">
+          <div class="small-card"><strong>1</strong><span>GitHub에서 새 저장소 만들기</span></div>
+          <div class="small-card"><strong>2</strong><span>index.html / style.css / script.js 업로드</span></div>
+          <div class="small-card"><strong>3</strong><span>Settings → Pages 이동</span></div>
+          <div class="small-card"><strong>4</strong><span>배포 후 생성된 URL 확인</span></div>
+        </div>
+        <div class="tip">예시 URL: https://사용자명.github.io/startup-type-test/</div>
+        <label class="check"><input type="checkbox"> 스마트폰에서 내 URL을 열어 테스트까지 완료했습니다.</label>
+      </section>
+
+      <section class="step finish" id="finish">
+        <div class="step-head">
+          <div class="num">✓</div>
+          <div><h2>완성!</h2><p class="desc">이제 여러분은 단순한 웹페이지가 아니라 데이터를 저장하고 통계를 보여주는 작은 웹서비스를 만들었습니다.</p></div>
+        </div>
+        <p><b>오늘 경험한 흐름</b><br>기획 → 프롬프트 → UI → JavaScript → DB → 통계 → 배포</p>
+        <p><b>다음 응용</b><br>피부 타입 테스트 · 여행 스타일 테스트 · 교육 유형 테스트 · 반려동물 성향 테스트 · 고객 진단 서비스</p>
+        <a class="done-btn" href="#step1">처음부터 다시 보기 ↑</a>
+      </section>
+
+      <div class="footer">
+        바이브코딩 실습 배포용 페이지 · 창업가 유형 테스트 프로젝트
+      </div>
+    </main>
+  </div>
+</div>
+
+<script>
+function fallbackCopyText(text) {
+  const textarea = document.createElement('textarea');
+  textarea.value = text;
+  textarea.setAttribute('readonly', '');
+  textarea.style.position = 'fixed';
+  textarea.style.top = '-9999px';
+  textarea.style.left = '-9999px';
+  textarea.style.opacity = '0';
+  document.body.appendChild(textarea);
+
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+
+  let success = false;
+  try {
+    success = document.execCommand('copy');
+  } catch (e) {
+    success = false;
+  }
+
+  document.body.removeChild(textarea);
+  return success;
+}
+
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const target = document.getElementById(btn.dataset.target);
+    if (!target) return;
+
+    const text = target.innerText.trim();
+    const originalText = btn.innerText;
+
+    let copied = false;
+
+    // HTTPS/localhost 환경에서는 최신 Clipboard API 우선 사용
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+      } catch (e) {
+        copied = false;
+      }
+    }
+
+    // file:// 로 직접 열었거나 Clipboard API가 막힌 경우에도 복사되도록 처리
+    if (!copied) {
+      copied = fallbackCopyText(text);
+    }
+
+    if (copied) {
+      btn.innerText = '복사됨 ✓';
+      btn.style.background = '#dcfce7';
+      btn.style.color = '#166534';
+
+      setTimeout(() => {
+        btn.innerText = originalText;
+        btn.style.background = '';
+        btn.style.color = '';
+      }, 1500);
+    } else {
+      // 마지막 안전장치: 텍스트를 직접 선택해 줌
+      const range = document.createRange();
+      range.selectNodeContents(target);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+      alert('자동 복사가 제한된 환경입니다. 프롬프트가 선택되었으니 Ctrl+C를 눌러 복사해주세요.');
+    }
+  });
+});
+</script>
+</body>
+</html>

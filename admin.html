@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>관리자 · 창업가 유형 테스트 통계</title>
+
+  <!-- 관리자 페이지는 검색엔진에 노출되지 않도록 합니다 -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+
+  <!-- 테스트 페이지와 같은 디자인을 쓰기 위해 style.css를 함께 불러옵니다 -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body class="admin-body">
+
+  <!-- ===== 1) 잠금 화면 ===== -->
+  <div class="admin-wrap" id="gate">
+    <section class="card gate-card">
+      <div class="badge">관리자 전용</div>
+      <h1 class="title">통계 대시보드</h1>
+      <p class="subtitle">참여자 통계를 보려면 관리자 비밀번호를 입력하세요.</p>
+
+      <label class="field-label" for="password">관리자 비밀번호</label>
+      <input id="password" class="input" type="password" placeholder="비밀번호 입력" autocomplete="off" />
+      <p id="gate-error" class="error-text"></p>
+
+      <button id="btn-unlock" class="btn btn-primary">들어가기</button>
+      <p class="note"><a class="link" href="index.html">← 테스트 페이지로 돌아가기</a></p>
+    </section>
+  </div>
+
+  <!-- ===== 2) 대시보드 ===== -->
+  <div class="admin-wrap admin-wide" id="dashboard" hidden>
+
+    <header class="admin-head">
+      <div>
+        <p class="admin-eyebrow">나는 어떤 창업가일까?</p>
+        <h1 class="admin-title">📊 참여자 통계</h1>
+        <p id="updated-at" class="admin-updated"></p>
+      </div>
+      <div class="admin-actions">
+        <button id="btn-refresh" class="btn-mini">🔄 새로고침</button>
+        <button id="btn-csv" class="btn-mini">⬇ CSV 저장</button>
+        <a class="btn-mini" href="index.html">테스트 페이지</a>
+        <button id="btn-lock" class="btn-mini">🔒 잠그기</button>
+      </div>
+    </header>
+
+    <!-- 불러오는 중 / 오류 메시지 -->
+    <p id="admin-status" class="admin-status"></p>
+
+    <div id="admin-content" hidden>
+
+      <!-- 요약 카드 3개 -->
+      <div class="summary-grid">
+        <div class="card summary-card">
+          <p class="summary-label">전체 참여자</p>
+          <p id="sum-total" class="summary-value">-</p>
+        </div>
+        <div class="card summary-card">
+          <p class="summary-label">오늘 참여자</p>
+          <p id="sum-today" class="summary-value">-</p>
+        </div>
+        <div class="card summary-card">
+          <p class="summary-label">가장 많은 유형</p>
+          <p id="sum-top" class="summary-value">-</p>
+        </div>
+      </div>
+
+      <!-- 유형별 분포 -->
+      <section class="card panel">
+        <h2 class="panel-title">유형별 분포</h2>
+        <div id="type-chart" class="chart"></div>
+      </section>
+
+      <!-- 최근 7일 추이 -->
+      <section class="card panel">
+        <h2 class="panel-title">최근 7일 참여 추이</h2>
+        <div id="trend-chart" class="trend"></div>
+      </section>
+
+      <!-- 최근 참여자 목록 -->
+      <section class="card panel">
+        <h2 class="panel-title">
+          최근 참여자
+          <span id="list-count" class="panel-sub"></span>
+        </h2>
+        <div class="table-scroll">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>닉네임</th>
+                <th>유형</th>
+                <th>IDEA</th>
+                <th>ACTION</th>
+                <th>DATA</th>
+                <th>PEOPLE</th>
+                <th>참여 시각</th>
+              </tr>
+            </thead>
+            <tbody id="list-body"></tbody>
+          </table>
+        </div>
+        <p id="list-empty" class="admin-empty" hidden>아직 참여자가 없습니다.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <footer class="footer">관리자 전용 페이지 · 나는 어떤 창업가일까?</footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
